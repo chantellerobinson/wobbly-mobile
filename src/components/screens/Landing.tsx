@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, TextInput, View, Button } from "react-native";
+import { Formik } from "formik";
+
 import ClientContext from "../../ClientContext";
 
 import { WobblyClient } from "../../client";
@@ -23,10 +25,27 @@ class Landing extends Component {
     const { state } = this.context;
     const start = state.client && state.client.start;
     return (
-      <View style={styles.container}>
-        <Text>Welcome to Wobbly!</Text>
-        <Button onPress={start} title="Start" />
-      </View>
+      <Formik
+        initialValues={{ username: '', password: '' }}
+        onSubmit={values => console.log(values)}
+      >
+        {({ handleChange, handleBlur, handleSubmit, values }) => (
+          <View style={styles.container}>
+            <Text>Welcome to Wobbly!</Text>
+            <TextInput
+              onChangeText={handleChange('username')}
+              onBlur={handleBlur('username')}
+              value={values.username}
+            />
+            <TextInput
+              onChangeText={handleChange('password')}
+              onBlur={handleBlur('password')}
+              value={values.password}
+            />
+            <Button onPress={start} title="Start" />
+          </View>
+        )}
+      </Formik>
     );
   }
 }
